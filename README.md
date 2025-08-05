@@ -64,11 +64,6 @@ This comprehensive network monitoring system combines the power of **Zabbix**, *
 ```bash
 # Download and run the automated installer
 curl -fsSL https://raw.githubusercontent.com/ch1n7u/network-monitoring-system/main/install.sh | bash
-
-# Or download first and review
-wget https://raw.githubusercontent.com/ch1n7u/network-monitoring-system/main/install.sh
-chmod +x install.sh
-./install.sh
 ```
 
 ### Option 2: Manual Installation
