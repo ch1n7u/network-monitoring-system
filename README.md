@@ -62,7 +62,6 @@ This comprehensive network monitoring system combines the power of **Zabbix**, *
 ### Option 1: Automatic Installation (Recommended)
 
 ```bash
-# Download and run the automated installer
 curl -fsSL https://raw.githubusercontent.com/ch1n7u/network-monitoring-system/main/install.sh | bash
 ```
 
@@ -70,47 +69,37 @@ curl -fsSL https://raw.githubusercontent.com/ch1n7u/network-monitoring-system/ma
 
 #### Step 1: System Preparation
 ```bash
-# Update system
 sudo apt update && sudo apt upgrade -y
 
-# Install dependencies
 sudo apt install -y curl wget apt-transport-https ca-certificates gnupg lsb-release
 
-# Install Docker
 curl -fsSL https://get.docker.com | sh
 sudo usermod -aG docker $USER
 
-# Install Docker Compose
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 ```
 
 #### Step 2: Download Project Files
 ```bash
-# Create project directory
 mkdir ~/network-monitoring && cd ~/network-monitoring
 
-# Download configuration files (create these based on the guide)
 # Files: docker-compose.yml, prometheus.yml, alertmanager.yml, etc.
 ```
 
 #### Step 3: Configure Services
 ```bash
-# Set up environment variables
 cp .env.example .env
 nano .env  # Edit with your settings
 
-# Create necessary directories
 mkdir -p grafana/provisioning/datasources
 mkdir -p ssl
 ```
 
 #### Step 4: Start Services
 ```bash
-# Start the monitoring stack
 docker-compose up -d
 
-# Check status
 docker-compose ps
 ```
 
@@ -120,19 +109,15 @@ docker-compose ps
 
 #### Ubuntu/Debian Installation
 ```bash
-# Add Zabbix repository
 wget https://repo.zabbix.com/zabbix/7.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_7.0-2+ubuntu$(lsb_release -rs)_all.deb
 sudo dpkg -i zabbix-release_7.0-2+ubuntu$(lsb_release -rs)_all.deb
 sudo apt update
 
-# Install Zabbix server, frontend, and agent
 sudo apt install -y zabbix-server-mysql zabbix-frontend-php zabbix-apache-conf zabbix-sql-scripts zabbix-agent
 
-# Install and configure MariaDB
 sudo apt install -y mariadb-server
 sudo mysql_secure_installation
 
-# Create Zabbix database
 sudo mysql -uroot -p
 CREATE DATABASE zabbix CHARACTER SET utf8mb4 COLLATE utf8mb4_bin;
 CREATE USER 'zabbix'@'localhost' IDENTIFIED BY 'your_secure_password';
@@ -140,12 +125,9 @@ GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;
 
-# Import initial schema
 sudo zcat /usr/share/zabbix-sql-scripts/mysql/server.sql.gz | mysql --default-character-set=utf8mb4 -uzabbix -p zabbix
 
-# Configure Zabbix server
 sudo nano /etc/zabbix/zabbix_server.conf
-# Add: DBPassword=your_secure_password
 
 # Start and enable services
 sudo systemctl restart zabbix-server zabbix-agent apache2
@@ -154,7 +136,6 @@ sudo systemctl enable zabbix-server zabbix-agent apache2
 
 #### Optimization for Production
 ```bash
-# Edit Zabbix server configuration
 sudo nano /etc/zabbix/zabbix_server.conf
 
 # Add performance tuning parameters:
